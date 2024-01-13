@@ -1,8 +1,8 @@
 export class Deck {
-    cards: Card[];
-    constructor({ jokersIncluded = false, shuffled = true }) {
-        this.cards = [];
+    private cards: Card[] = [];
+    cardCount: number = this.cards.length;
 
+    constructor({ jokersIncluded = false, shuffled = true }) {
         for (let suitIndex = 1; suitIndex < 5; suitIndex++) {
             for (let cardIndex = 1; cardIndex < 14; cardIndex++) {
                 this.cards.push(new Card(cardIndex, suitIndex));
@@ -41,9 +41,26 @@ export class Deck {
         }
     }
 
-    drawCard(): Card {
+    drawCardFromTop(): Card {
         return this.cards.pop();
-    } 
+    }
+
+    drawCardFromBottom(): Card {
+        return this.cards.shift();
+    }
+
+    addCardToTop(card: Card): void {
+        this.cards.push(card);
+    }
+
+    addCardToMiddle(card: Card): void {
+        let randomIndex = Math.floor(Math.random() * this.cards.length);
+        this.cards.splice(randomIndex, 0, card);
+    }
+
+    addCardToBottom(card: Card): void {
+        this.cards.unshift(card);
+    }
 }
 
 export class Card {
@@ -59,6 +76,10 @@ export class Card {
         let possibleSuits: number[] = Object.keys(Suit).filter(value => isNaN(Number(Suit[value])) == false).map(value => Number(Suit[value]));
         if (possibleSuits.indexOf(suit) == -1) {
             throw new Error(`Cannot create Card object with suit: ${suit}`)
+        }
+
+        if (suit == Suit.None && value != CardValue.Joker) {
+            throw new Error(`Invalid value: ${value}, only CardValue.Joker can be created with Suit.None`)
         }
 
         this.value = value;
