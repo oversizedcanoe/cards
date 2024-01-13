@@ -5,7 +5,7 @@ export class Deck {
 
         for (let suitIndex = 1; suitIndex < 5; suitIndex++) {
             for (let cardIndex = 1; cardIndex < 14; cardIndex++) {
-                this.cards.push(new Card(suitIndex, cardIndex));
+                this.cards.push(new Card(cardIndex, suitIndex));
             }
         }
 
@@ -50,19 +50,19 @@ export class Card {
     suit: Suit;
     value: number;
 
-    constructor(suit: Suit, value: number) {
-        let possibleSuits: number[] = Object.keys(Suit).filter(value => isNaN(Number(Suit[value])) == false).map(value => Number(Suit[value]));
-        if (possibleSuits.indexOf(suit) == -1) {
-            throw new Error(`Cannot create Card object with suit: ${suit}`)
-        }
-
+    constructor(value: number, suit: Suit) {
         let possibleValues: number[] = Object.keys(CardValue).filter(value => isNaN(Number(CardValue[value])) == false).map(value => Number(CardValue[value]));
         if (possibleValues.indexOf(value) == -1) {
             throw new Error(`Cannot create Card object with value: ${value}`)
         }
 
-        this.suit = suit;
+        let possibleSuits: number[] = Object.keys(Suit).filter(value => isNaN(Number(Suit[value])) == false).map(value => Number(Suit[value]));
+        if (possibleSuits.indexOf(suit) == -1) {
+            throw new Error(`Cannot create Card object with suit: ${suit}`)
+        }
+
         this.value = value;
+        this.suit = suit;
     }
 
     shorthandName() {
@@ -95,13 +95,11 @@ export class Card {
         return name;
 
     }
-
-
 }
 
 export class Joker extends Card {
     constructor() {
-        super(Suit.None, 0);
+        super(0, Suit.None);
     }
 }
 
