@@ -1,5 +1,5 @@
 export class Deck {
-    private cards: Card[] = [];
+    cards: Card[] = [];
     cardCount: number = this.cards.length;
 
     constructor({ jokersIncluded = false, shuffled = true }) {
