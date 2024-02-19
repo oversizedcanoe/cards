@@ -9,6 +9,8 @@ export class Deck {
             }
         }
 
+        this.cards.reverse();
+
         if (jokersIncluded) {
             this.cards.push(new Joker());
             this.cards.push(new Joker());
@@ -41,11 +43,11 @@ export class Deck {
         }
     }
 
-    drawCardFromTop(): Card {
+    drawCardFromTop(): Card | undefined {
         return this.cards.pop();
     }
 
-    drawCardFromBottom(): Card {
+    drawCardFromBottom(): Card | undefined {
         return this.cards.shift();
     }
 
@@ -68,13 +70,11 @@ export class Card {
     value: number;
 
     constructor(value: number, suit: Suit) {
-        let possibleValues: number[] = Object.keys(CardValue).filter(value => isNaN(Number(CardValue[value])) == false).map(value => Number(CardValue[value]));
-        if (possibleValues.indexOf(value) == -1) {
+        if(value in CardValue == false){
             throw new Error(`Cannot create Card object with value: ${value}`)
         }
 
-        let possibleSuits: number[] = Object.keys(Suit).filter(value => isNaN(Number(Suit[value])) == false).map(value => Number(Suit[value]));
-        if (possibleSuits.indexOf(suit) == -1) {
+        if(suit in Suit == false){
             throw new Error(`Cannot create Card object with suit: ${suit}`)
         }
 
